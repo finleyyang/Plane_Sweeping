@@ -32,12 +32,14 @@ void PlaneSweeping::EstimateDepth() {
         warpPerspective(gray_right, warp_right, KHKinv.inv(), imgSize);
         cv::Mat diff;
         filter2D(abs(gray_left - warp_right), diff, CV_64F, kernel);
+        cv::Mat cost = cv::Mat::zeros(imgSize.height, imgSize.width, CV_64FC1);
         for (int row = 0; row < imgSize.height; row++)
         {
             for (int col = 0; col < imgSize.width; col++)
             {
                 int tmp;
                 tmp = diff.at<double>(row, col);
+                cost.at<double>(row, col) = tmp;
                 if (tmp < sad.at<double>(row, col))
                 {
                     sad.at<double>(row, col) = tmp;
@@ -45,6 +47,7 @@ void PlaneSweeping::EstimateDepth() {
                 }
             }
         }
+        costall.push_back(cost);
         double min, max;
         minMaxLoc(depth, &min, &max);
         depth.convertTo(depth, CV_8UC1, 255.0 / (max - min),

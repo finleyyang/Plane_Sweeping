@@ -17,9 +17,12 @@ private:
     cv::Mat K;
     cv::Mat R;
     cv::Mat t;
+    std::vector<cv::Mat> costall;
+    double depthpre;
 public:
     void LoadInformation(cv::Mat pleft, cv::Mat pright, cv::Mat pK, cv::Mat pR, cv::Mat pt);
     void EstimateDepth();
+    void CostAggregation();
 };
 
 #endif //PLANESWEEPING_PLANESWEEPING_H
