@@ -8,6 +8,7 @@ void PlaneSweeping::LoadInformation(cv::Mat pleft, cv::Mat pright, cv::Mat pK, c
     left = pleft;
     right = pright;
     K = pK;
+
     R = pR;
     t = pt;
 }
@@ -24,10 +25,12 @@ void PlaneSweeping::EstimateDepth() {
     cv::cvtColor(left, gray_left, cv::COLOR_BGR2GRAY);
     cv::cvtColor(right, gray_right, cv::COLOR_BGR2GRAY);
     for(int i = 1500; i>0; i--){
-        float d = ((K.at<float>(0,0)+K.at<float>(1,1))/2)/i;
+        std::cout<<"Planing "<<i<<std::endl;
+        double d = (K.at<double>(0,0) + K.at<double>(1, 1))/2/i;
+        std::cout<<"Planing depth "<<d<<std::endl;
         if(d>15) break;
         cv::Mat H = R - t * n_t / d;
-        cv::Mat KHKinv = K * H *K.inv();
+        cv::Mat KHKinv = K * H * K.inv();
         cv::Mat warp_right;
         warpPerspective(gray_right, warp_right, KHKinv.inv(), imgSize);
         cv::Mat diff;
@@ -38,6 +41,7 @@ void PlaneSweeping::EstimateDepth() {
             {
                 int tmp;
                 tmp = diff.at<double>(row, col);
+                //cost.at<double>(row, col) = tmp;
                 if (tmp < sad.at<double>(row, col))
                 {
                     sad.at<double>(row, col) = tmp;
@@ -45,12 +49,13 @@ void PlaneSweeping::EstimateDepth() {
                 }
             }
         }
-        double min, max;
-        minMaxLoc(depth, &min, &max);
-        depth.convertTo(depth, CV_8UC1, 255.0 / (max - min),
-                          -min * 255.0 / (max - min));
+        //costall.push_back(cost);
     }
-    cv::imshow("img", depth);
+    double min, max;
+    minMaxLoc(depth, &min, &max);
+    depth.convertTo(depth, CV_8UC1, 255.0 / (max - min),
+                    -min * 255.0 / (max - min));
+    //cv::imshow("img", depth);
     cv::imwrite("../depth.jpg", depth);
 }
 

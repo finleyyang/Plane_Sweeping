@@ -36,6 +36,8 @@ public:
     cv::Mat GetK(){return K;};
     cv::Mat GetR(){return R;};
     cv::Mat Gett(){return t;};
+    cv::Mat Getleft(){return left;}
+    cv::Mat Getright(){return right;}
 };
 
 #endif //SELF_CALCULATERT_H
