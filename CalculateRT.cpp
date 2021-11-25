@@ -5,9 +5,10 @@
 
 
 void CalculateRT::ReadImageandParam() {
-    left = cv::imread("../data/DSC_0341.JPG");
-    right = cv::imread("../data/DSC_0342.JPG");
-    cv::FileStorage fs("../calib_param.yml", cv::FileStorage::READ);
+
+    left = cv::imread("../kitti/left.png");
+    right = cv::imread("../kitti/right.png");
+    cv::FileStorage fs("../calib_param_kitti.yml", cv::FileStorage::READ);
     fs["camera_matrix"] >> K;
     fs["distortion_coefficients"] >> distCoeffs;
 }
