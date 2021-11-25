@@ -8,7 +8,6 @@ void PlaneSweeping::LoadInformation(cv::Mat pleft, cv::Mat pright, cv::Mat pK, c
     left = pleft;
     right = pright;
     K = pK;
-
     R = pR;
     t = pt;
 }
