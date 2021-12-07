@@ -23,7 +23,7 @@ void PlaneSweeping::EstimateDepth() {
     cv::Mat gray_left, gray_right;
     cv::cvtColor(left, gray_left, cv::COLOR_BGR2GRAY);
     cv::cvtColor(right, gray_right, cv::COLOR_BGR2GRAY);
-    for(int i = 700; i>0; i--){
+    for(int i = 1400; i>0; i--){
         std::cout<<"Planing "<<i<<std::endl;
         double d = (K.at<double>(0,0) + K.at<double>(1, 1))/2/i;
         std::cout<<"Planing depth "<<d<<std::endl;
@@ -55,6 +55,6 @@ void PlaneSweeping::EstimateDepth() {
     depth.convertTo(depth, CV_8UC1, 255.0 / (max - min),
                     -min * 255.0 / (max - min));
     //cv::imshow("img", depth);
-    cv::imwrite("../depthkitti.jpg", depth);
+    cv::imwrite("../depth.jpg", depth);
 }
 

@@ -6,9 +6,9 @@
 
 void CalculateRT::ReadImageandParam() {
 
-    left = cv::imread("../kitti/left.png");
-    right = cv::imread("../kitti/right.png");
-    cv::FileStorage fs("../calib_param_kitti.yml", cv::FileStorage::READ);
+    left = cv::imread("../data/DSC_0341.JPG");
+    right = cv::imread("../data/DSC_0342.JPG");
+    cv::FileStorage fs("../calib_param.yml", cv::FileStorage::READ);
     fs["camera_matrix"] >> K;
     fs["distortion_coefficients"] >> distCoeffs;
 }
@@ -68,6 +68,10 @@ void CalculateRT::CalculateRnt() {
         sel_points_right = realPointsRight;
     }
     E = cv::findEssentialMat(sel_points_left, sel_points_right, K);
+    std::cout<<sel_points_left.size()<<std::endl;
+//    for(int i=0; i<sel_points_left.size(); i++){
+//        std::cout<<sel_points_left[i].x<<" "<<sel_points_left[i].y<<std::endl;
+//    }
 
     cv::recoverPose(E, sel_points_left, sel_points_right, K, R, t);
 }
